@@ -1,4 +1,5 @@
 {
+  "homepage": "https://Ajay-kumar-Gadila.github.io/ux-gita-ui",
   "name": "git-ui",
   "version": "0.1.0",
   "private": true,
@@ -17,6 +18,11 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "analyze": "react-scripts analyze",
+    "format": "prettier --write src/**/*.{js,jsx,json,css}",
+    "lint": "eslint src",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
