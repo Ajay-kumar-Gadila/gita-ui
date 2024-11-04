@@ -6,8 +6,14 @@ function SlokaDetail() {
   const [slokaData, setSlokaData] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
+  const [searchFilters, setSearchFilters] = useState({
+    slokaNumber: '',
+    speaker: '',
+    sloka: '',
+    meaning: '',
+  });
 
-  // Number of slokas per page
   const slokasPerPage = 10;
 
   useEffect(() => {
@@ -34,11 +40,26 @@ function SlokaDetail() {
     return <p className="text-center text-gray-500">No slokas found.</p>;
   }
 
-  // Calculate the total number of pages
-  const totalPages = Math.ceil(slokaData.length / slokasPerPage);
+  const sortedData = [...slokaData].sort((a, b) => {
+    if (sortConfig.key) {
+      const aValue = a[sortConfig.key];
+      const bValue = b[sortConfig.key];
+      if (aValue < bValue) return sortConfig.direction === 'ascending' ? -1 : 1;
+      if (aValue > bValue) return sortConfig.direction === 'ascending' ? 1 : -1;
+      return 0;
+    }
+    return 0;
+  });
 
-  // Get the slokas for the current page
-  const currentSlokas = slokaData.slice(
+  const filteredData = sortedData.filter((sloka) =>
+    Object.keys(searchFilters).every((key) =>
+      sloka[key].toString().toLowerCase().includes(searchFilters[key].toLowerCase())
+    )
+  );
+
+  const totalPages = Math.ceil(filteredData.length / slokasPerPage);
+
+  const currentSlokas = filteredData.slice(
     currentPage * slokasPerPage,
     (currentPage + 1) * slokasPerPage
   );
@@ -55,6 +76,21 @@ function SlokaDetail() {
     }
   };
 
+  const handleSort = (key) => {
+    setSortConfig((prevSortConfig) => ({
+      key,
+      direction:
+        prevSortConfig.key === key && prevSortConfig.direction === 'ascending'
+          ? 'descending'
+          : 'ascending',
+    }));
+  };
+
+  const handleSearchChange = (event) => {
+    const { name, value } = event.target;
+    setSearchFilters((prevFilters) => ({ ...prevFilters, [name]: value }));
+  };
+
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col items-center py-10">
       <div className="bg-white rounded-lg shadow-lg p-8 max-w-4xl w-full relative">
@@ -67,10 +103,33 @@ function SlokaDetail() {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-gray-200 bg-gray-50">
-                <th className="py-3 px-4 text-md font-semibold text-gray-700">Sloka Number</th>
-                <th className="py-3 px-4 text-md font-semibold text-gray-700">Speaker</th>
-                <th className="py-3 px-4 text-md font-semibold text-gray-700">Sloka</th>
-                <th className="py-3 px-4 text-md font-semibold text-gray-700">Meaning</th>
+                {['slokaNumber', 'speaker', 'sloka', 'meaning'].map((key) => (
+                  <th
+                    key={key}
+                    onClick={() => handleSort(key)}
+                    className="py-3 px-4 text-md font-semibold text-gray-700 cursor-pointer"
+                  >
+                    {key.charAt(0).toUpperCase() + key.slice(1)}
+                    {sortConfig.key === key && (
+                      <span>{sortConfig.direction === 'ascending' ? ' 🔼' : ' 🔽'}</span>
+                    )}
+                  </th>
+                ))}
+              </tr>
+              {/* Search Row */}
+              <tr className="border-b border-gray-200 bg-gray-50">
+                {['slokaNumber', 'speaker', 'sloka', 'meaning'].map((key) => (
+                  <th key={key} className="py-2 px-4">
+                    <input
+                      type="text"
+                      name={key}
+                      value={searchFilters[key]}
+                      onChange={handleSearchChange}
+                      placeholder={`Search ${key}`}
+                      className="w-full px-2 py-1 border border-gray-300 rounded"
+                    />
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
@@ -86,7 +145,6 @@ function SlokaDetail() {
           </table>
         </div>
 
-        {/* Pagination Controls */}
         <div className="flex justify-between mt-6">
           <button
             onClick={prevPage}
