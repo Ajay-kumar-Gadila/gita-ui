@@ -1,16 +1,18 @@
-// App.js
-import React from "react";
-import "./App.css";
-import CardGallery from "./component/CardGallery";
-import "swiper/css";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import CardGallery from './component/CardGallery';
+import SlokaDetail from './component/SlokaDetail';
 
 function App() {
   return (
-    <div className="App">
-      <header className=" text-black  pt-8">
-        <h1 className="text-4xl font-bold text-center ">Bhagavad Gita Chapters</h1>
-        </header>
-      <CardGallery />
+    <div>
+    
+    <Router>
+      <Routes> {/* Wrap Route components in Routes */}
+        <Route path="/" element={<CardGallery />} />
+        <Route path="/sloka/:chapterId" element={<SlokaDetail />} />
+      </Routes>
+    </Router>
     </div>
   );
 }
