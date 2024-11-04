@@ -7,6 +7,9 @@ function SlokaDetail() {
   const [currentPage, setCurrentPage] = useState(0);
   const [loading, setLoading] = useState(true);
 
+  // Number of slokas per page
+  const slokasPerPage = 10;
+
   useEffect(() => {
     async function fetchSloka() {
       try {
@@ -16,7 +19,7 @@ function SlokaDetail() {
       } catch (error) {
         console.error("Error fetching sloka details:", error);
       } finally {
-        setLoading(false); // Set loading to false once data is fetched
+        setLoading(false);
       }
     }
 
@@ -31,7 +34,14 @@ function SlokaDetail() {
     return <p className="text-center text-gray-500">No slokas found.</p>;
   }
 
-  const totalPages = slokaData.length;
+  // Calculate the total number of pages
+  const totalPages = Math.ceil(slokaData.length / slokasPerPage);
+
+  // Get the slokas for the current page
+  const currentSlokas = slokaData.slice(
+    currentPage * slokasPerPage,
+    (currentPage + 1) * slokasPerPage
+  );
 
   const nextPage = () => {
     if (currentPage < totalPages - 1) {
@@ -45,53 +55,38 @@ function SlokaDetail() {
     }
   };
 
-  const handleSlokaChange = (event) => {
-    setCurrentPage(Number(event.target.value));
-  };
-
-  
-
   return (
-    <div className="bg-gray-100 min-h-screen flex items-center justify-center">
-      <div className="bg-white rounded-lg shadow-lg p-8 max-w-lg w-full relative">
-        <h2 className="text-2xl font-bold text-center mb-4">
-          Chapter {slokaData[currentPage].chapterNumber}
+    <div className="bg-gray-100 min-h-screen flex flex-col items-center py-10">
+      <div className="bg-white rounded-lg shadow-lg p-8 max-w-4xl w-full relative">
+        <h2 className="text-2xl font-bold text-center mb-6">
+          Chapter {chapterId} - Slokas
         </h2>
-        <h3 className="text-xl font-semibold text-center mb-2">
-          Sloka {slokaData[currentPage].slokaNumber}
-        </h3>
-        <p className="text-md text-gray-600 mb-4">
-          <strong>Speaker:</strong> {slokaData[currentPage].speaker}
-        </p>
-        <div className="border-l-4 border-gray-500 pl-4 mb-4">
-          <p className="text-lg text-gray-800 leading-relaxed">
-            <strong>Sloka:</strong> {slokaData[currentPage].sloka}
-          </p>
-        </div>
-        <p className="text-md text-gray-500 mb-4">
-          <strong>Meaning:</strong> {slokaData[currentPage].meaning}
-        </p>
 
-        {/* Dropdown for selecting sloka */}
-        <div className="mb-6">
-          <label htmlFor="slokaDropdown" className="block text-md font-medium text-gray-700 mb-2">
-            Select Sloka:
-          </label>
-          <select
-            id="slokaDropdown"
-            value={currentPage}
-            onChange={handleSlokaChange}
-            className="block w-full border border-gray-300 rounded-md shadow-sm focus:border-green-500 focus:ring focus:ring-green-200"
-          >
-            {slokaData.map((sloka, index) => (
-              <option key={index} value={index}>
-                Sloka {sloka.slokaNumber}
-              </option>
-            ))}
-          </select>
+        {/* Responsive Data Table */}
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="border-b border-gray-200 bg-gray-50">
+                <th className="py-3 px-4 text-md font-semibold text-gray-700">Sloka Number</th>
+                <th className="py-3 px-4 text-md font-semibold text-gray-700">Speaker</th>
+                <th className="py-3 px-4 text-md font-semibold text-gray-700">Sloka</th>
+                <th className="py-3 px-4 text-md font-semibold text-gray-700">Meaning</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentSlokas.map((sloka, index) => (
+                <tr key={index} className="border-b border-gray-200">
+                  <td className="py-3 px-4 whitespace-nowrap">{sloka.slokaNumber}</td>
+                  <td className="py-3 px-4 whitespace-nowrap">{sloka.speaker}</td>
+                  <td className="py-3 px-4 whitespace-normal">{sloka.sloka}</td>
+                  <td className="py-3 px-4 whitespace-normal">{sloka.meaning}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
 
-        {/* Button Container */}
+        {/* Pagination Controls */}
         <div className="flex justify-between mt-6">
           <button
             onClick={prevPage}
@@ -100,6 +95,9 @@ function SlokaDetail() {
           >
             Previous
           </button>
+          <span className="text-gray-700 font-medium">
+            Page {currentPage + 1} of {totalPages}
+          </span>
           <button
             onClick={nextPage}
             disabled={currentPage === totalPages - 1}
