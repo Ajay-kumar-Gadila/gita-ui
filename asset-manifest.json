@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/gita-ui/static/css/main.d592b9e0.css",
-    "main.js": "/gita-ui/static/js/main.33904b19.js",
-    "static/js/453.f9025809.chunk.js": "/gita-ui/static/js/453.f9025809.chunk.js",
-    "index.html": "/gita-ui/index.html",
-    "main.d592b9e0.css.map": "/gita-ui/static/css/main.d592b9e0.css.map",
-    "main.33904b19.js.map": "/gita-ui/static/js/main.33904b19.js.map",
-    "453.f9025809.chunk.js.map": "/gita-ui/static/js/453.f9025809.chunk.js.map"
+    "main.css": "/ux-gita-ui/static/css/main.d592b9e0.css",
+    "main.js": "/ux-gita-ui/static/js/main.6be0792a.js",
+    "static/js/453.f9025809.chunk.js": "/ux-gita-ui/static/js/453.f9025809.chunk.js",
+    "index.html": "/ux-gita-ui/index.html",
+    "main.d592b9e0.css.map": "/ux-gita-ui/static/css/main.d592b9e0.css.map",
+    "main.6be0792a.js.map": "/ux-gita-ui/static/js/main.6be0792a.js.map",
+    "453.f9025809.chunk.js.map": "/ux-gita-ui/static/js/453.f9025809.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.d592b9e0.css",
-    "static/js/main.33904b19.js"
+    "static/js/main.6be0792a.js"
   ]
 }
