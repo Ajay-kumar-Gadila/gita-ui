@@ -90,4 +90,5 @@ function CardGallery() {
   );
 }
 
-export default CardGallery;
+
+export default CardGallery;   
