@@ -57,11 +57,11 @@ function SlokaDetail() {
     <div className="flex flex-col items-center py-8">
       <div className="p-8 w-full">
         
-        <div className="flex flex-col items-center mb-6 relative">
-          <h2 className="text-2xl font-bold text-center  relative z-10">
+        <div className="flex flex-col items-center  relative">
+          <h2 className="text-[22px] font-bold text-center  relative z-10">
             Chapter {chapterId} - Slokas
           </h2>
-          <img src={fluteImage} alt="Flute" className="w-98 h-auto mt-[-80px] mr-[40px] z-0" />
+          <img src={fluteImage} alt="Flute" className="w-120 h-auto mt-[-88px] mr-[34px] z-0" />
           
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
